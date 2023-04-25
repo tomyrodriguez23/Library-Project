@@ -1,0 +1,20 @@
+.books{
+    margin-top: 20px;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(3, auto);
+    margin-bottom: 100px;
+
+}
+
+.booksTitle{
+    font-family:'SpaceGrotesk-Light';
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #038587;
+	color:whitesmoke;
+	line-height: 1.2;
+        font-weight: 500;
+        
+}

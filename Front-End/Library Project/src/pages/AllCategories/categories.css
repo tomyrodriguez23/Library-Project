@@ -1,0 +1,18 @@
+.categories{
+    display: grid;
+    grid-gap: 30px;
+    grid-template-columns: repeat(4, auto);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 70px;
+}
+.categoryTitle{
+    font-family:'SpaceGrotesk-Light';
+    padding: 10px;
+    margin-top: 1px;
+    margin-bottom: 30px;
+    background-color: #038587;
+	color:whitesmoke;
+	line-height: 1.2;
+    font-weight: 500;
+}

@@ -1,0 +1,48 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #038587;
+    color: #FFFFFF;
+    z-index: 2;
+}
+
+.footerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+}
+
+.SocialMedia {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.copyright {
+    font-size: 14px;
+}
+
+.SocialMedia > li {
+    display: flex;
+}
+
+.SocialMedia li {
+    width: 25px;
+    margin-left: 25px;
+    cursor: pointer;
+}
+
+.container{
+    display: flex;
+    justify-content: space-around;
+}
+
+@media (max-width: 640px) {
+    .footer {
+        justify-content: center;
+    }
+
+}
