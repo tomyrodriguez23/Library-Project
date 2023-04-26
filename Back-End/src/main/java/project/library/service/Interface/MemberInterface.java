@@ -8,7 +8,7 @@ import project.library.exception.BadRequestException;
 import java.util.List;
 
 public interface MemberInterface {
-    void saveMember(MemberDTO memberDTO);
+    String saveMember(MemberDTO memberDTO);
     void updateMember(MemberDTO memberDTO);
     MemberDTO findMemberById(Long id);
     List<MemberDTO> findAllMembers();

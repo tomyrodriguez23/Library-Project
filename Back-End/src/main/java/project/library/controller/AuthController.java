@@ -34,9 +34,22 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
-    public ResponseEntity<HttpStatus> signUp(@RequestBody @Valid MemberDTO memberDTO){
-        memberService.saveMember(memberDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<String> signUp(@RequestBody @Valid MemberDTO memberDTO){
+        String token = memberService.saveMember(memberDTO);
+        return new ResponseEntity<>(token, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/confirm")
+    @Operation(summary = "Confirm Member")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Member confirmed succesfully",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Token Not found", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+    })
+    public ResponseEntity<String> confirm(@RequestParam String token){
+        var msj = memberService.confirmToken(token);
+        return new ResponseEntity<>(msj, HttpStatus.OK);
     }
 
     @PostMapping("/login")
@@ -51,8 +64,6 @@ public class AuthController {
         var data = memberService.authenticate(request);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
-
-
 
 
 
