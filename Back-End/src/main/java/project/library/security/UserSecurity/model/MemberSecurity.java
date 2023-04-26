@@ -36,7 +36,7 @@ public class MemberSecurity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !member.getLocked();
     }
 
     @Override
@@ -46,9 +46,7 @@ public class MemberSecurity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return member.getEnabled();
     }
-
-
 
 }

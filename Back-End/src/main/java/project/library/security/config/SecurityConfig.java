@@ -34,9 +34,13 @@ public class SecurityConfig {
 //                        .authenticated())
                 .authorizeHttpRequests(auth -> auth
 
-                                .requestMatchers("api/v1/libraries/**").hasRole("MOD")
-                                .requestMatchers("api/v1/roles/**").hasRole("MOD")
-                                .requestMatchers(HttpMethod.DELETE, "api/v1/orders/**").hasRole("MOD")
+//                                .requestMatchers("api/v1/libraries/**").hasRole("MOD")
+//                                .requestMatchers("api/v1/roles/**").hasRole("MOD")
+//                                .requestMatchers(HttpMethod.DELETE, "api/v1/orders/**").hasRole("MOD")
+
+                        .requestMatchers("api/v1/libraries/**").permitAll()
+                        .requestMatchers("api/v1/roles/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "api/v1/orders/**").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "api/v1/categories/**").hasAnyRole("ADMIN","MOD")
                                 .requestMatchers(HttpMethod.PUT, "api/v1/categories/**").hasAnyRole("ADMIN","MOD")

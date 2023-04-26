@@ -77,6 +77,8 @@ public class MemberService implements MemberInterface {
                 .address(addressSaved)
                 .library(library)
                 .roles(roles)
+                .enabled(false)
+                .locked(false)
                 .build();
 
        memberRepository.save(member);
