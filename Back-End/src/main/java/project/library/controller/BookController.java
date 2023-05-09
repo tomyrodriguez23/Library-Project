@@ -143,4 +143,20 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
+
+    @GetMapping("/name/{name}/pages")
+    @Operation(summary = "List books by Page and PageSize")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Books found succefully",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Book.class))}),
+            @ApiResponse(responseCode = "404", description = "Books not found", content = @Content)
+    })
+    public ResponseEntity<Page<BookDTO>> findAllBooksByNamePaginated(@PathVariable String name,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "15") int size){
+        var books = bookService.findBooksByName(name, page, size);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+    }
+
 }

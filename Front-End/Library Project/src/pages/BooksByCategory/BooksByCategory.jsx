@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { url } from '../../utils.json'
 import axios from 'axios'
-import BooksByCategoryCards from './BooksByCategoryCards'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import './booksCategory.css'
 import { Pagination } from '@mui/material'
+import { useGlobalStates } from '../../context/GlobalContext'
+import HeaderLogged from '../../components/Header/HeaderLogged'
+import BooksByCategoryCard from './BooksByCategoryCard'
 
 const BooksByCategory = () => {
 
@@ -16,6 +18,7 @@ const BooksByCategory = () => {
     const [page, setPage] = useState()
     const [size, setSize] = useState()
     const [totalPages, setTotalPages] = useState()
+    const { isLogged, user } = useGlobalStates()
 
     useEffect(() => {
         getFirstBooks()
@@ -48,24 +51,26 @@ const BooksByCategory = () => {
         }
     }
 
-    const handleChange = (e,p) => {
-        setPage(p-1)
+    const handleChange = (e, p) => {
+        setPage(p - 1)
     }
 
     return (
         <div>
-            <Header />
+            {isLogged ? <HeaderLogged /> : <Header />}
             <h1 className='booksTitle'>{books[0]?.category.name}</h1>
-            <div className='books'>
+            <div className='books-section'>
                 {books?.map((book) => (
-                    <BooksByCategoryCards
+                    <BooksByCategoryCard
+                        userRoles={user?.roles}
                         key={book?.id}
                         idBook={book?.id}
                         bookName={book?.bookName}
                         authorName={book?.authorName}
                         imageUrl={book?.imageUrl}
-                        category={book?.category.name}
+                        categoryName={book?.category.name}
                         pages={book?.pages}
+                        categoryId={book?.category.id}
                     />
                 ))}
                 {totalPages === 1 ? null : <Pagination count={totalPages} onChange={handleChange} color="primary" />}

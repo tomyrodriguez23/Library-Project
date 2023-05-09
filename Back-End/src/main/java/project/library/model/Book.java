@@ -29,11 +29,15 @@ public class Book {
     @NotBlank
     private String authorName;
 
+    @Column(length = 1000000)
+    @NotBlank
+    private String description;
+
     @Column
     @NotNull
     private int pages;
 
-    @Column
+    @Column(length = 10000)
     @NotBlank
     private String imageUrl;
 

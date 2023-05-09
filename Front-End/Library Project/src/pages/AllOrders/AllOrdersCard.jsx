@@ -12,14 +12,20 @@ import { url } from '../../utils.json'
 import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import CheckIcon from '@mui/icons-material/Check';
+import { useGlobalStates } from '../../context/GlobalContext';
 
 export default function AllOrdersCard({ id, bookName, authorName, imageUrl, issuedDate, returnDate, activeOrder }) {
 
   const navigate = useNavigate()
+  const {user} = useGlobalStates()
 
   const handleReturn = async () => {
     try {
-      await axios.put(`${url}/orders/${id}`)
+      await axios.put(`${url}/orders/${id}`, null, {
+        headers: {
+          "Authorization": `Bearer ${user?.token}`
+        }
+      })
       success()
     }
     catch (error) {
@@ -117,7 +123,7 @@ export default function AllOrdersCard({ id, bookName, authorName, imageUrl, issu
           <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold', mt: 1 }}>
             Return: {returnDate}
           </Typography>
-          <Button onClick={() => handleReturn()} variant='contained' disabled sx={{ borderRadius: '20px', backgroundColor: '#038587', color: '#fff', fontWeight: 'bold', mt: 2 }}>Returned <CheckIcon/> </Button>
+          <Button onClick={() => handleReturn()} variant='contained' disabled sx={{ borderRadius: '20px', backgroundColor: '#038587', color: '#fff', fontWeight: 'bold', mt: 2 }}>Returned <CheckIcon /> </Button>
         </CardContent>
       </Card>
 

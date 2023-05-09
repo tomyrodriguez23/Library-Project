@@ -12,13 +12,13 @@ import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['categories', 'books', 'orders'];
+const pages = ['Categories', 'Books'];
 
 function HeaderLogIn() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate()
-  
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -39,16 +39,19 @@ function HeaderLogIn() {
     navigate(`/${page}`)
   }
 
+  const navigateHome = () => {
+    navigate('/')
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AutoStoriesOutlinedIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AutoStoriesOutlinedIcon sx={{ display: { xs: 'none', md: 'flex', cursor:'pointer', '&:hover': { color: '#d7d7d7' } }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -57,7 +60,10 @@ function HeaderLogIn() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor:'pointer', 
+              '&:hover': { color: '#d7d7d7' }
             }}
+            onClick={navigateHome}
           >
             Library
           </Typography>
@@ -92,14 +98,16 @@ function HeaderLogIn() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page}
+                  onClick={() => { handleCloseNavMenu(); navigatePage(page); }}
+                >
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
-          <AutoStoriesOutlinedIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <AutoStoriesOutlinedIcon onClick={navigateHome} sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -107,7 +115,7 @@ function HeaderLogIn() {
             href=""
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: 'none', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -122,16 +130,16 @@ function HeaderLogIn() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => { handleCloseNavMenu(); navigatePage(page);}}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={() => { handleCloseNavMenu(); navigatePage(page); }}
+                sx={{ my: 2, color: 'white', display: 'block', '&:hover': { color: '#d7d7d7' } }}
               >
                 {page}
               </Button>
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0}}>
-            <Button onClick={() => navigate("/signUp")} sx={{margin:1}} variant="outlined" color="inherit">SIGN UP</Button>
+          <Box sx={{ flexGrow: 0 }}>
+            <Button onClick={() => navigate("/signUp")} sx={{ margin: 1 }} variant="outlined" color="inherit">SIGN UP</Button>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"

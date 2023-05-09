@@ -8,10 +8,9 @@ import project.library.exception.BadRequestException;
 import java.util.List;
 
 public interface MemberInterface {
-    String saveMember(MemberDTO memberDTO);
     void updateMember(MemberDTO memberDTO);
     MemberDTO findMemberById(Long id);
     List<MemberDTO> findAllMembers();
     void deleteMemberById(Long id);
-    AuthResponse authenticate(AuthRequest request) throws BadRequestException;
+
 }

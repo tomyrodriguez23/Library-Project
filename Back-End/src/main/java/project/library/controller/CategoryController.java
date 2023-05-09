@@ -36,7 +36,6 @@ public class CategoryController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
-    @PreAuthorize(value = "hasRole('ROLE_ADMIN')")
     public ResponseEntity<HttpStatus> saveCategory(@RequestBody @Valid CategoryDTO categoryDTO){
         categoryService.saveCategory(categoryDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);

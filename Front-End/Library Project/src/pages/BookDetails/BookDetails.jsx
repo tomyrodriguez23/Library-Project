@@ -6,6 +6,8 @@ import { url } from '../../utils.json'
 import axios from 'axios'
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, Typography } from '@mui/material';
 import Swal from "sweetalert2";
+import HeaderLogged from '../../components/Header/HeaderLogged'
+import { useGlobalStates } from '../../context/GlobalContext'
 
 export default function BookDetails() {
 
@@ -13,10 +15,8 @@ export default function BookDetails() {
   const [expanded, setExpanded] = React.useState(false);
   const { id } = useParams()
   const navigate = useNavigate()
+  const { isLogged, user } = useGlobalStates()
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   useEffect(() => {
     getDetails()
@@ -35,10 +35,15 @@ export default function BookDetails() {
   const makeOrder = async () => {
     const data = {
       book: { id: `${id}` },
-      member: { id: '1' }
+      member: { id: user?.id }
     }
     try {
-      await axios.post(`${url}/orders`, data);
+      await axios.post(`${url}/orders`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${user?.token}`
+        }
+      });
       success()
     }
     catch (error) {
@@ -49,7 +54,7 @@ export default function BookDetails() {
   const success = () => {
     Swal.fire({
       title: `${book?.bookName}`,
-      text: "Succesfully ordered",
+      text: "PDF Succesfully sent",
       icon: 'success',
       confirmButtonColor: '#3085d6',
       confirmButtonText: 'OK'
@@ -61,59 +66,110 @@ export default function BookDetails() {
 
   }
 
-
   return (
     <div>
-      <Header />
-      <Grid>
-        <Grid item xs={6}>
-          <Card style={{ backgroundColor: 'whitesmoke', maxWidth: "%70", margin: '0 auto', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-            <Grid container>
-              <Grid item xs={6}>
-                <CardMedia
-                  style={{ height: '100%', width: '100%', objectFit: 'cover' }}
-                  image={book?.imageUrl}
-                  title={book?.bookName}
-                />
-              </Grid>
-              <Grid item xs={6} style={{ padding: '16px' }}>
-                <Typography gutterBottom variant="h4" component="h2" style={{ color: '#038587', marginBottom: 16, textAlign: 'center' }}>
-                  {book?.bookName}
-                </Typography>
-                <Typography variant="h6" color="textSecondary" component="p" style={{ color: '#038587', marginBottom: 8 }}>
-                  Author
-                </Typography>
-                <Typography variant="body1" component="p" style={{ marginBottom: 16 }}>
-                  {book?.authorName}
-                </Typography>
-                <Typography variant="h6" color="textSecondary" component="p" style={{ color: '#038587', marginBottom: 8 }}>
-                  Pages
-                </Typography>
-                <Typography variant="body1" component="p" style={{ marginBottom: 16 }}>
-                  {book?.pages}
-                </Typography>
-                <Typography variant="h6" color="textSecondary" component="p" style={{ color: '#038587', marginBottom: 8 }}>
-                  Category
-                </Typography>
-                <Typography variant="body1" component="p" style={{ marginBottom: 16 }}>
-                  {book?.category.name}
-                </Typography>
-                <Typography variant="h6" color="textSecondary" component="p" style={{ color: '#038587', marginBottom: 8 }}>
-                  Description
-                </Typography>
-
-                <Typography variant="body1" component="p" >
-                  A book description is a short summary of a book's story or content that is designed to “hook” a reader and lead to a sale. Typically, the book's description conveys important information about its topic or focus in nonfiction or the plot and tone for a novel or any other piece of fiction.
-                </Typography>
-                <CardActions style={{ justifyContent: 'center', marginTop: 'auto' }}>
-                  {book?.available ?
-                    <Button onClick={() => makeOrder()} size="large" color="primary" variant="contained" sx={{ borderRadius: '20px', backgroundColor: '#038587', color: '#fff', fontWeight: 'bold' }} style={{ backgroundColor: '#038587' }}>Order Book</Button>
-                    :
-                    <Button onClick={() => makeOrder()} size="large" variant="contained" sx={{ borderRadius: '20px' }} disabled> Order Book</Button>
-                  }
-                </CardActions>
-              </Grid>
-            </Grid>
+      {isLogged ? <HeaderLogged /> : <Header />}
+      <Grid
+        container
+        justifyContent="center"
+        sx={{
+          marginTop: "70px",
+          "@media (max-width: 900px)": {
+            marginTop: "0px",
+            marginBottom: "50px"
+          },
+        }}
+      >
+        <Grid item xs={12} sm={10} md={8} lg={6}>
+          <Card
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+            }}
+          >
+            <CardMedia
+              component="img"
+              sx={{ width: { xs: "100%", md: "40%" } }}
+              image={book?.imageUrl}
+              alt={book?.bookName}
+            />
+            <CardContent sx={{ flex: "1", display: "flex", flexDirection: "column" }}>
+              <Typography
+                gutterBottom
+                variant="h4"
+                component="h2"
+                sx={{ color: "#038587", mb: 2 }}
+              >
+                {book?.bookName}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                sx={{ color: "#038587", mb: 1 }}
+              >
+                Author
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                {book?.authorName}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                sx={{ color: "#038587", mb: 1 }}
+              >
+                Pages
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                {book?.pages}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                sx={{ color: "#038587", mb: 1 }}
+              >
+                Category
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                {book?.category.name}
+              </Typography>
+              <Typography
+                variant="h6"
+                color="textSecondary"
+                sx={{ color: "#038587", mb: 1 }}
+              >
+                Description
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                {book?.description}
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={!book?.available}
+                  onClick={makeOrder}
+                  sx={{
+                    borderRadius: "20px",
+                    backgroundColor: "#038587",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    "@media (max-width: 600px)": {
+                      fontSize: "12px",
+                    },
+                  }}
+                >
+                  Order Book
+                </Button>
+              </Box>
+            </CardContent>
           </Card>
         </Grid>
       </Grid>

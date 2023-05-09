@@ -38,14 +38,6 @@ public class Order {
     @NotNull
     private boolean active;
 
-
-//    @ManyToMany
-//    @JoinTable(
-//            name = "orders_books",
-//            joinColumns = @JoinColumn(name = "order_id"),
-//            inverseJoinColumns = @JoinColumn(name = "book_id"))
-//    private List<Book> books = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "book_id" , referencedColumnName = "id")
     private Book book;

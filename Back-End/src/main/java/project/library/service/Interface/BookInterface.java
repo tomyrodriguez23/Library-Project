@@ -19,5 +19,6 @@ public interface BookInterface {
 
     Page<BookDTO> findBooks(int pageNumber, int pageSize);
 
+    Page<BookDTO> findBooksByName(String name, int pageNumber, int pageSize);
 
 }

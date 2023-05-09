@@ -23,20 +23,15 @@ public class Category {
     @NotBlank
     private String name;
 
-    @Column
+    @Column(length = 1000000)
     @NotBlank
     private String description;
 
-    @Column
+    @Column(length = 10000)
     @NotBlank
     private String imageUrl;
 
     @OneToMany(mappedBy = "category",cascade = CascadeType.REMOVE)
     private Set<Book> books;
-
-
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private Set<SubCategory> subCategories;
 
 }

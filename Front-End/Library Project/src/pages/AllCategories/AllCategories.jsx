@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import CategoriesCard from '../../components/Categories/CategoriesCard'
 import axios from 'axios'
 import { url } from "../../utils.json"
 import './categories.css'
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import { Pagination } from '@mui/material'
+import HeaderLogged from '../../components/Header/HeaderLogged'
+import { useGlobalStates } from '../../context/GlobalContext'
+import CategoriesCard from '../../components/Home/CategoriesCard'
 
 const AllCategories = () => {
 
@@ -13,6 +15,8 @@ const AllCategories = () => {
     const [page, setPage] = useState()
     const [size, setSize] = useState()
     const [totalPages, setTotalPages] = useState()
+    const { isLogged } = useGlobalStates()
+    const {user} = useGlobalStates()
 
     useEffect(() => {
         getFirstCategories()
@@ -51,12 +55,12 @@ const AllCategories = () => {
 
     return (
         <div>
-            <Header />
+            {isLogged ? <HeaderLogged /> : <Header />}
             <div>
-                <h1 className='categoryTitle'>Tired of boring books? Discover new categories for an exciting read!
+                <h1 className='categoryTitle'>Our categories!
                 </h1>
-                <div className='categories'>
-                    {categories?.map((category) => <CategoriesCard key={category?.id} id={category?.id} name={category?.name} description={category?.description} imageUrl={category?.imageUrl} />)}
+                <div className='categories-section'>
+                    {categories?.map((category) => <CategoriesCard key={category?.id} id={category?.id} userRoles={user?.roles} name={category?.name} description={category?.description} imageUrl={category?.imageUrl} />)}
                     <Pagination count={totalPages} onChange={handleChange} color="primary" />
                 </div>
             </div>
@@ -66,3 +70,4 @@ const AllCategories = () => {
 }
 
 export default AllCategories
+

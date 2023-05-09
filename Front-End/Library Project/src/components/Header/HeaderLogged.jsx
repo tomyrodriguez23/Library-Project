@@ -7,70 +7,118 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@emotion/react';
 import { useGlobalStates } from '../../context/GlobalContext';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Grid } from '@mui/material';
+import LogoutIcon from '@mui/icons-material/Logout';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
-const pages = ['categories', 'books', 'orders'];
+
 
 function HeaderLogged() {
 
-    const { user } = useGlobalStates()
+    const pages = ['Categories', 'Books'];
+
+    const { user, logout } = useGlobalStates()
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate()
 
-
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
-    };
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
     };
 
     const handleCloseNavMenu = () => {
         setAnchorElNav(null);
     };
 
-    const handleCloseUserMenu = () => {
+    const navigatePage = (page) => {
+        navigate(`/${page}`)
+    }
+
+    const handleUserMenuClick = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleUserMenuClose = () => {
         setAnchorElUser(null);
     };
 
-    const navigatePage = (page) => {
-        navigate(`/${page}`)
+    const handleMyAccountClick = () => {
+        navigate('/account');
+        handleUserMenuClose();
+    };
+
+    const handleAddCategoryClick = () => {
+        navigate('/admin/category');
+        handleUserMenuClose();
+    };
+
+    const handleAddBookClick = () => {
+        navigate('/admin/book');
+        handleUserMenuClose();
+    };
+
+    const handleListMembersClick = () => {
+        navigate('/admin/members');
+        handleUserMenuClose();
+    };
+
+    const handleMyOrdersClick = () => {
+        navigate('/orders');
+        handleUserMenuClose();
+    };
+
+    const logoutClick = () => {
+        logout()
+        navigate('/')
+    }
+
+    const handleAdmin = () => {
+        navigate('/admin/category')
+    }
+
+    const navigateHome = () => {
+        navigate('/')
     }
 
     return (
         <AppBar position="static">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <AutoStoriesOutlinedIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+
+                    <AutoStoriesOutlinedIcon sx={{ display: { xs: 'none', sm: 'flex', md: 'flex', cursor: 'pointer', '&:hover': { color: '#d7d7d7' } }, mr: 1 }} />
+                    {/* ICONO BIG */}
+
                     <Typography
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
-                            display: { xs: 'none', md: 'flex' },
+                            display: { xs: 'none', sm: 'flex', md: 'flex' },
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
+                            cursor: 'pointer',
+                            '&:hover': { color: '#d7d7d7' }
                         }}
+                        onClick={navigateHome}
                     >
                         Library
                     </Typography>
+                    {/* Library BIG */}
 
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                    <Box sx={{ flexGrow: 1, alignItems: "center", display: { xs: 'flex', sm: 'none', md: 'none' } }}>
+
+                        {/* BOX SMALL */}
+
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -81,6 +129,7 @@ function HeaderLogged() {
                         >
                             <MenuIcon />
                         </IconButton>
+
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
@@ -100,77 +149,103 @@ function HeaderLogged() {
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page} onClick={() => {
+                                    handleCloseNavMenu();
+                                    navigatePage(page);
+                                }} >
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
+                        <AutoStoriesOutlinedIcon onClick={() => navigate('/')} sx={{ mr: 1 }} />
                     </Box>
 
-                    <AutoStoriesOutlinedIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        component="a"
-                        href=""
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        Library
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'none', sm: 'flex', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={() => { handleCloseNavMenu(); navigatePage(page); }}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, color: 'white', display: 'block', '&:hover': { color: '#d7d7d7' } }}
                             >
                                 {page}
                             </Button>
                         ))}
                     </Box>
+
                     <Box sx={{ flexGrow: 0 }}>
-                        <Grid sx={{display:'flex', alignItems:"center"}}>
-                        <Typography
-                            variant="h6"
-                            sx={{
-                                mr: 2,
-                                flexGrow: 1,
-                                fontFamily: 'monospace',
-                                fontWeight: 700,
-                                letterSpacing: '.05rem',
-                                color: 'inherit',
-                            }}
-                        >
-                            Welcome, {user?.lastName} {user?.name}!!
-                        </Typography>
-                        <AccountCircleIcon />
+                        <Grid sx={{ display: 'flex', alignItems: 'center' }}>
+
+                            {
+                                user?.roles.map((rol) => (
+                                    rol.name === "ROLE_ADMIN" || rol.name === "ROLE_MOD" ?
+                                        <Box key={rol.id} sx={{ mr: 1 }}>
+
+                                            <IconButton key={rol.id} color="inherit" onClick={handleUserMenuClick}>
+                                                <AdminPanelSettingsIcon />
+                                            </IconButton>
+                                            <Menu
+                                                id="menu-appbar"
+                                                anchorEl={anchorElUser}
+                                                anchorOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                open={Boolean(anchorElUser)}
+                                                onClose={handleUserMenuClose}
+                                            >
+                                                <MenuItem onClick={handleAddCategoryClick}>Add Category</MenuItem>
+                                                <MenuItem onClick={handleAddBookClick}>Add Book</MenuItem>
+                                                <MenuItem onClick={handleListMembersClick}>List Members</MenuItem>
+                                            </Menu>
+                                            
+
+                                        </Box>
+
+                                        :
+                                        
+                                        <Box key={rol.id} sx={{ mr: 1 }}>
+
+                                            <IconButton
+                                                onClick={handleUserMenuClick}
+                                                color="inherit"
+                                            >
+                                                <AccountCircleIcon />
+                                            </IconButton>
+                                            <Menu
+                                                id="menu-appbar"
+                                                anchorEl={anchorElUser}
+                                                anchorOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                keepMounted
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'right',
+                                                }}
+                                                open={Boolean(anchorElUser)}
+                                                onClose={handleUserMenuClose}
+                                            >
+                                                <MenuItem onClick={handleMyAccountClick}>Account</MenuItem>
+                                                <MenuItem onClick={handleMyOrdersClick}>Orders</MenuItem>
+                                            </Menu>
+                                        </Box>
+
+                                ))
+                            }
+
+                            <IconButton
+                                color="inherit"
+                                onClick={logoutClick}
+                            >
+                                <LogoutIcon />
+                            </IconButton>
                         </Grid>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                        </Menu>
                     </Box>
                 </Toolbar>
             </Container>

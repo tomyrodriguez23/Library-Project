@@ -39,5 +39,4 @@ public class JpaUserDetailsService  {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
 }

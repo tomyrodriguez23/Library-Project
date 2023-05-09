@@ -1,20 +1,34 @@
-.books{
-    margin-top: 20px;
+.books-section {
     display: grid;
-    grid-gap: 10px;
+    grid-gap: 30px;
+    margin-bottom: 60px;
     grid-template-columns: repeat(3, auto);
-    margin-bottom: 100px;
-
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
+
+@media only screen and (max-width: 1300px) {
+    .books-section {
+        grid-template-columns: repeat(2, auto);
+        width: 95%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .books-section {
+        grid-template-columns: repeat(1, auto);
+    }
+}
+
 
 .booksTitle{
     font-family:'SpaceGrotesk-Light';
     padding: 10px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 1px;
+    margin-bottom: 30px;
     background-color: #038587;
 	color:whitesmoke;
 	line-height: 1.2;
-        font-weight: 500;
-        
+    font-weight: 500;
 }

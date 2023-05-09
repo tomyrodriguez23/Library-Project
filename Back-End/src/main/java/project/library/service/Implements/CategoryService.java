@@ -83,7 +83,7 @@ public class CategoryService implements CategoryInterface {
     public void deleteCategoryById(Long id) {
         categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with ID: " + id + " does not exist"));
-        categoryRepository.deleteById(id);
+        categoryRepository.deleteCategoryWithBooks(id);
     }
 
     @Override
@@ -110,4 +110,6 @@ public class CategoryService implements CategoryInterface {
 
         return new PageImpl<>(categoriesDTO, pageable, page.getTotalElements());
     }
+
+
 }

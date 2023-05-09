@@ -7,20 +7,18 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ['Categories', 'Books', 'Orders'];
+const pages = ['Categories', 'Books'];
 
 function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate()
-  
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -41,16 +39,19 @@ function Header() {
     navigate(`/${page}`)
   }
 
+  const navigateHome = () => {
+    navigate('/')
+  }
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AutoStoriesOutlinedIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <AutoStoriesOutlinedIcon sx={{ display: { xs: 'none', md: 'flex', cursor:'pointer', '&:hover': { color: '#d7d7d7' } }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -59,7 +60,10 @@ function Header() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              cursor: 'pointer',
+              '&:hover': { color: '#d7d7d7' }
             }}
+            onClick={navigateHome}
           >
             Library
           </Typography>
@@ -94,14 +98,17 @@ function Header() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page}
+                  onClick={() => { handleCloseNavMenu(); navigatePage(page); }}
+                >
+                  <Typography
+                    textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
-          <AutoStoriesOutlinedIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <AutoStoriesOutlinedIcon onClick={navigateHome} sx={{ display: { xs: 'flex', md: 'none', '&:hover': { color: '#d7d7d7' } }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -109,7 +116,7 @@ function Header() {
             href=""
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: 'none', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -124,21 +131,16 @@ function Header() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => { handleCloseNavMenu(); navigatePage(page);}}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                onClick={() => { handleCloseNavMenu(); navigatePage(page); }}
+                sx={{ my: 2, color: 'white', display: 'block','&:hover': { color: '#d7d7d7' }}}
               >
                 {page}
               </Button>
             ))}
           </Box>
-          <Box sx={{ flexGrow: 0}}>
-            {/* <Tooltip title="Open settings"> */}
-              {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton> */}
-            <Button onClick={() => navigate("/signup")} sx={{margin:1}} variant="outlined" color="inherit">Signup</Button>
-            <Button onClick={() => navigate("/login")} sx={{margin:1}} variant="outlined" color="inherit">Login</Button>
-            {/* </Tooltip> */}
+          <Box sx={{ flexGrow: 0 }}>
+            <Button onClick={() => navigate("/signup")} sx={{ margin: 1 }} variant="outlined" color="inherit">Signup</Button>
+            <Button onClick={() => navigate("/login")} sx={{ margin: 1 }} variant="outlined" color="inherit">Login</Button>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"

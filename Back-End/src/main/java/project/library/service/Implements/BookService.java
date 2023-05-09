@@ -12,6 +12,7 @@ import project.library.model.Book;
 import project.library.model.Category;
 import project.library.model.Library;
 import project.library.repository.BookRepository;
+import project.library.repository.LibraryRepository;
 import project.library.service.Interface.BookInterface;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,19 +23,23 @@ public class BookService implements BookInterface {
 
     private final BookRepository bookRepository;
     private final ObjectMapper mapper;
+    private final LibraryRepository libraryRepository;
 
     @Override
     public void saveBook(BookDTO bookDTO) {
+
+        var library = libraryRepository.findById(1L).get();
 
         var book = Book
                 .builder()
                 .bookName(bookDTO.getBookName())
                 .authorName(bookDTO.getAuthorName())
+                .description(bookDTO.getDescription())
                 .imageUrl(bookDTO.getImageUrl())
                 .pages(bookDTO.getPages())
                 .available(true)
                 .category(mapper.convertValue(bookDTO.getCategory(), Category.class))
-                .library(mapper.convertValue(bookDTO.getLibrary(), Library.class))
+                .library(library)
                 .build();
 
         bookRepository.save(book);
@@ -50,11 +55,12 @@ public class BookService implements BookInterface {
                 .id(bookDTO.getId())
                 .bookName(bookDTO.getBookName())
                 .authorName(bookDTO.getAuthorName())
+                .description(bookDTO.getDescription())
                 .imageUrl(bookDTO.getImageUrl())
                 .pages(bookDTO.getPages())
                 .available(book.isAvailable())
                 .category(mapper.convertValue(bookDTO.getCategory(), Category.class))
-                .library(mapper.convertValue(bookDTO.getLibrary(), Library.class))
+                .library(book.getLibrary())
                 .build();
 
         bookRepository.save(bookUpdate);
@@ -79,6 +85,7 @@ public class BookService implements BookInterface {
     public void deleteBookById(Long id) {
        bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book with ID: " + id + " does not exist"));
+       bookRepository.deleteOrdersByBookId(id);
        bookRepository.deleteById(id);
     }
 
@@ -100,6 +107,20 @@ public class BookService implements BookInterface {
             throw new ResourceNotFoundException("The list is empty");
         }
 
+        var booksDTO = page.getContent().stream()
+                .map((book) -> mapper.convertValue(book, BookDTO.class))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(booksDTO, pageable, page.getTotalElements());
+    }
+
+    @Override
+    public Page<BookDTO> findBooksByName(String name, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        var page = bookRepository.findByBookNameContainingIgnoreCase(name, pageable);
+        if (page.isEmpty()){
+            throw new ResourceNotFoundException("There are no books with that name");
+        }
         var booksDTO = page.getContent().stream()
                 .map((book) -> mapper.convertValue(book, BookDTO.class))
                 .collect(Collectors.toList());

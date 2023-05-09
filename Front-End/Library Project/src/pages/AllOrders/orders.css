@@ -1,11 +1,31 @@
-.orders{
+.orders {
     display: grid;
     grid-gap: 30px;
     grid-template-columns: repeat(4, auto);
     align-items: center;
     justify-content: center;
-    margin-bottom: 70px;
+    width: 100%;
+    margin-top: 20px;
 }
+
+@media only screen and (max-width: 1300px) {
+    .orders {
+        grid-template-columns: repeat(3, auto);
+    }
+}
+
+@media only screen and (max-width: 970px) {
+    .orders {
+        grid-template-columns: repeat(2, auto);
+    }
+}
+
+@media only screen and (max-width: 560px) {
+    .orders {
+        grid-template-columns: repeat(1, auto);
+    }
+}
+
 .ordersTitle{
     font-family:'SpaceGrotesk-Light';
     padding: 10px;
@@ -16,3 +36,4 @@
 	line-height: 1.2;
     font-weight: 500;
 }
+

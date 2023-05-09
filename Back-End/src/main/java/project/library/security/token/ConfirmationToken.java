@@ -1,5 +1,7 @@
 package project.library.security.token;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +32,8 @@ public class ConfirmationToken {
     private LocalDateTime confirmedAt;
 
     @ManyToOne
-    @JoinColumn(
-            nullable = false,
-            name = "member_id"
-    )
+    @JoinColumn(nullable = false, name = "member_id")
+    @JsonIgnore
     private Member member;
 
     public ConfirmationToken(String token,

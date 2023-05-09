@@ -27,29 +27,20 @@ public class SecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/v1/members/**")
-//                        .permitAll()
-//                        .anyRequest()
-//                        .authenticated())
                 .authorizeHttpRequests(auth -> auth
 
-//                                .requestMatchers("api/v1/libraries/**").hasRole("MOD")
-//                                .requestMatchers("api/v1/roles/**").hasRole("MOD")
-//                                .requestMatchers(HttpMethod.DELETE, "api/v1/orders/**").hasRole("MOD")
-
-                        .requestMatchers("api/v1/libraries/**").permitAll()
-                        .requestMatchers("api/v1/roles/**").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "api/v1/orders/**").permitAll()
+                                .requestMatchers("api/v1/libraries/**").hasRole("MOD")
+                                .requestMatchers("api/v1/roles/**").hasRole("MOD")
+                                .requestMatchers(HttpMethod.DELETE, "api/v1/orders/**").hasRole("MOD")
 
                                 .requestMatchers(HttpMethod.POST, "api/v1/categories/**").hasAnyRole("ADMIN","MOD")
                                 .requestMatchers(HttpMethod.PUT, "api/v1/categories/**").hasAnyRole("ADMIN","MOD")
                                 .requestMatchers(HttpMethod.DELETE, "api/v1/categories/**").hasAnyRole("ADMIN","MOD")
                                 .requestMatchers(HttpMethod.GET, "api/v1/categories/**").permitAll()
 
-                                .requestMatchers(HttpMethod.POST, "api/v1/books/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "api/v1/books/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "api/v1/books/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "api/v1/books/**").hasAnyRole("ADMIN","MOD")
+                                .requestMatchers(HttpMethod.PUT, "api/v1/books/**").hasAnyRole("ADMIN","MOD")
+                                .requestMatchers(HttpMethod.DELETE, "api/v1/books/**").hasAnyRole("ADMIN","MOD")
                                 .requestMatchers(HttpMethod.GET, "api/v1/books/**").permitAll()
 
                                 .requestMatchers(HttpMethod.POST, "api/v1/orders/**").hasAnyRole("USER","ADMIN","MOD")
@@ -58,7 +49,7 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.PUT,"api/v1/members/**").hasAnyRole("USER","ADMIN","MOD")
                                 .requestMatchers(HttpMethod.DELETE,"api/v1/members/**").hasAnyRole("ADMIN","MOD")
-                                .requestMatchers(HttpMethod.GET,"api/v1/members/**").hasAnyRole("ADMIN","MOD")
+                                .requestMatchers(HttpMethod.GET,"api/v1/members/**").permitAll()
 
                         .anyRequest()
                                 .permitAll())

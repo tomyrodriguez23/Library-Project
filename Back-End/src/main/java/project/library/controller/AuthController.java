@@ -14,6 +14,7 @@ import project.library.DTO.AuthRequest;
 import project.library.DTO.AuthResponse;
 import project.library.DTO.MemberDTO;
 import project.library.exception.BadRequestException;
+import project.library.service.Implements.AuthService;
 import project.library.service.Implements.MemberService;
 
 @CrossOrigin("*")
@@ -24,7 +25,7 @@ import project.library.service.Implements.MemberService;
         description = "Authentication Operations")
 public class AuthController {
 
-    private final MemberService memberService;
+    private final AuthService authService;
 
     @PostMapping("/signup")
     @Operation(summary = "Save new member")
@@ -35,7 +36,7 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     public ResponseEntity<String> signUp(@RequestBody @Valid MemberDTO memberDTO){
-        String token = memberService.saveMember(memberDTO);
+        String token = authService.signUpMember(memberDTO);
         return new ResponseEntity<>(token, HttpStatus.CREATED);
     }
 
@@ -48,7 +49,7 @@ public class AuthController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
     public ResponseEntity<String> confirm(@RequestParam String token){
-        var msj = memberService.confirmToken(token);
+        var msj = authService.confirmToken(token);
         return new ResponseEntity<>(msj, HttpStatus.OK);
     }
 
@@ -60,11 +61,22 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Bad request", content = @Content),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
     })
-    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthRequest request) throws BadRequestException {
-        var data = memberService.authenticate(request);
+    public ResponseEntity<AuthResponse> logIn(@RequestBody @Valid AuthRequest request) throws BadRequestException {
+        var data = authService.logIn(request);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-
+    @GetMapping("/send")
+    @Operation(summary = "Send Email with Token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Email with Token confirmed succesfully",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Mail Not found", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
+    })
+    public ResponseEntity<String> sendEmail(@RequestParam String email){
+        var msj = authService.sendEmail(email);
+        return new ResponseEntity<>(msj, HttpStatus.CREATED);
+    }
 
 }

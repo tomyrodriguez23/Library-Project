@@ -1,8 +1,11 @@
 package project.library.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import project.library.security.token.ConfirmationToken;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,15 +37,17 @@ public class Member {
     @ToString.Exclude
     @Column(nullable = false)
     private String password;
-
     private Boolean locked = false;
     private Boolean enabled = false;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
     private Address address;
 
     @OneToMany(mappedBy = "member")
     private Set<Order> orders;
+
+    @OneToMany(mappedBy = "member")
+    private Set<ConfirmationToken> confirmationTokens;
 
     @ManyToOne
     @JoinColumn(name = "library_id", referencedColumnName = "id", nullable = false)
@@ -54,6 +59,8 @@ public class Member {
             joinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
     private Set<Role> roles = new HashSet<>();
+
+
 
     public Member(String name, String lastName, String email, String password, Boolean locked, Boolean enabled, Address address, Set<Order> orders, Library library, Set<Role> roles) {
         this.name = name;

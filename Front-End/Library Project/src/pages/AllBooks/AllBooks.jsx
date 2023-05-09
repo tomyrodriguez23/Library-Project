@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import AllBooksCard from './AllBooksCard'
 import axios from 'axios'
 import {url} from "../../utils.json"
 import Header from '../../components/Header/Header'
 import Footer from '../../components/Footer/Footer'
 import "./recomendations.css"
 import { Pagination } from '@mui/material'
+import { useGlobalStates } from '../../context/GlobalContext'
+import HeaderLogged from '../../components/Header/HeaderLogged'
+import BooksCard from '../../components/Home/BooksCard'
 
 const AllBooks = () => {
     const [books, setBooks] = useState([])
     const [page, setPage] = useState()
     const [size, setSize] = useState()
     const [totalPages, setTotalPages] = useState()
+    const {isLogged} = useGlobalStates()
+    const {user} = useGlobalStates()
 
     useEffect(() => {
         getFirstBooks()
@@ -50,10 +54,10 @@ const AllBooks = () => {
 
     return (
         <div>
-            <Header/>
+            {isLogged ? <HeaderLogged/> : <Header/>}
             <h1 className='booksTitle'>Popular Picks: Best-Selling Books</h1>
-            <div className='books'>
-                {books?.map((rec) => <AllBooksCard key={rec?.id} id={rec?.id} bookName={rec?.bookName} authorName={rec?.authorName} pages={rec?.pages}
+            <div className='books-section'>
+                {books?.map((rec) => <BooksCard userRoles={user?.roles} key={rec?.id} id={rec?.id} bookName={rec?.bookName} authorName={rec?.authorName} pages={rec?.pages}
                     imageUrl={rec?.imageUrl} categoryName={rec?.category.name}
                 />)}
                 <Pagination count={totalPages} onChange={handleChange} color="primary"/>

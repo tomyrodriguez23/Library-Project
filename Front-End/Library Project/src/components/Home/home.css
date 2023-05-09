@@ -1,0 +1,106 @@
+.categories-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.title {
+    font-family: 'SpaceGrotesk-Light';
+    padding: 10px;
+    margin-top: 1px;
+    margin-bottom: 30px;
+    background-color: #038587;
+    color: whitesmoke;
+    line-height: 1.2;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+}
+
+.categories-section {
+    display: grid;
+    grid-gap: 30px;
+    margin-bottom: 60px;
+    grid-template-columns: repeat(4, auto);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+@media only screen and (max-width: 1300px) {
+    .categories-section {
+        grid-template-columns: repeat(3, auto);
+    }
+}
+
+@media only screen and (max-width: 970px) {
+    .categories-section {
+        grid-template-columns: repeat(2, auto);
+    }
+}
+
+@media only screen and (max-width: 560px) {
+    .categories-section {
+        grid-template-columns: repeat(1, auto);
+    }
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    border-radius: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.26);
+
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.search-button {
+    background-color: #038587;
+    color: whitesmoke;
+    border: none;
+    border-radius: 25px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.books-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.books-section {
+    display: grid;
+    grid-gap: 30px;
+    margin-bottom: 60px;
+    grid-template-columns: repeat(3, auto);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+@media only screen and (max-width: 1300px) {
+    .books-section {
+        grid-template-columns: repeat(2, auto);
+        width: 95%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .books-section {
+        grid-template-columns: repeat(1, auto);
+    }
+}
+

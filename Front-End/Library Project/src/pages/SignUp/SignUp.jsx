@@ -45,9 +45,15 @@ export default function SignUp() {
     email: Yup.string()
       .email('Invalid email address')
       .required('Required'),
-    password: Yup.string()
+      password: Yup.string()
       .required('Required')
-      .min(8, 'Password must be at least 8 characters')
+      .min(4, 'Password must be at least 4 characters')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{4,}$/, 'Must contain at least one lowercase letter, one uppercase letter, and one number'),
+    confirmPassword: Yup.string()
+      .required('Required')
+      .min(4, 'Password must be at least 4 characters')
+      .oneOf([Yup.ref('password'), null], 'Passwords must match')
+      .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{4,}$/, 'Must contain at least one lowercase letter, one uppercase letter, and one number')
   });
 
   return (
@@ -67,7 +73,7 @@ export default function SignUp() {
             <Avatar sx={{ m: 1, bgcolor: '#038587' }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography sx={{marginBottom:3}} component="h1" variant="h5">
+            <Typography sx={{ marginBottom: 3 }} component="h1" variant="h5">
               Sign up
             </Typography>
             <Formik
@@ -130,6 +136,18 @@ export default function SignUp() {
                         autoComplete="new-password"
                         error={touched.password && Boolean(errors.password)}
                         helperText={touched.password && errors.password}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        as={TextField}
+                        fullWidth
+                        id="confirmPassword"
+                        label="Confirm Password"
+                        name="confirmPassword"
+                        type="password"
+                        error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+                        helperText={touched.confirmPassword && errors.confirmPassword}
                       />
                     </Grid>
                   </Grid>

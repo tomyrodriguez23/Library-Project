@@ -14,12 +14,26 @@ import java.util.stream.Collectors;
 public class GlobalException {
 
     @ExceptionHandler({ResourceNotFoundException.class})
-    public ResponseEntity<String> procesarResourceNotFoundException (ResourceNotFoundException rnfe){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(rnfe.getMessage());
+    public ResponseEntity<String> procesarResourceNotFoundException (ResourceNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
     @ExceptionHandler({BadRequestException.class})
-    public ResponseEntity<String> procesarBadRequestException(BadRequestException bre){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bre.getMessage());
+    public ResponseEntity<String> procesarBadRequestException(BadRequestException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<String> procesarAuthenticationException(AuthenticationException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @ExceptionHandler({IllegalStateException.class})
+    public ResponseEntity<String> procesarIllegalStateException(IllegalStateException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    @ExceptionHandler({NotAuthorizedException.class})
+    public ResponseEntity<String> procesarNotAuthorizedException(NotAuthorizedException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -28,4 +42,6 @@ public class GlobalException {
                 .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
         return new ResponseEntity<>(errors, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+
 }

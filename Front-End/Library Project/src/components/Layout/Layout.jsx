@@ -1,10 +1,9 @@
 import React from 'react'
 import Header from '../Header/Header'
-import Categories from '../Categories/Categories'
-import Recomendations from '../Recomendations/Recomendations'
 import Footer from '../Footer/Footer'
 import { useGlobalStates } from '../../context/GlobalContext'
 import HeaderLogged from '../Header/HeaderLogged'
+import Home from '../Home/Home'
 
 const Layout = () => {
 
@@ -13,8 +12,7 @@ const Layout = () => {
   return (
     <>
     {isLogged ? <HeaderLogged/> : <Header/>}
-    <Categories/>
-    <Recomendations/>
+    <Home />
     <Footer/>
     </>
   )
